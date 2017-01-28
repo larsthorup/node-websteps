@@ -1,0 +1,25 @@
+{
+  "name": "websteps",
+  "version": "0.0.1",
+  "description": " End-to-end web testing on top of Chrome Debugging Protocol",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/larsthorup/node-websteps.git"
+  },
+  "keywords": [
+    "testing",
+    "end-to-end",
+    "acceptance",
+    "integration",
+    "chrome",
+    "chrome-debugging-protocol",
+    "cdp"
+  ],
+  "author": "Lars Thorup <lars@zealake.com> (http://github.com/larsthorup)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/larsthorup/node-websteps/issues"
+  },
+  "homepage": "https://github.com/larsthorup/node-websteps#readme"
+}
