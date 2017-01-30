@@ -24,5 +24,16 @@
   "homepage": "https://github.com/larsthorup/node-websteps#readme",
   "dependencies": {
     "chrome-remote-interface": "^0.17.1"
+  },
+  "files": [
+    "index.js"
+  ],
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "co": "^4.6.0",
+    "mocha": "^3.2.0"
+  },
+  "scripts": {
+    "test": "mocha"
   }
 }
