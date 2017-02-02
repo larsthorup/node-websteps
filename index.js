@@ -16,22 +16,22 @@ function chromePath () {
 function launching (options = {}) {
   return new Promise((resolve, reject) => {
     const browser = options.browser || 'chrome';
-  const port = options.port || 9222;
-  const userDataDir = options.userDataDir;
-  const verbose = options.verbose;
-  if (browser === 'chrome') {
-    const browserPath = chromePath();
-    const args = [
-      `--remote-debugging-port=${port}`,
-      `--user-data-dir=${userDataDir}`
-    ];
-    if (verbose) console.log(`Starting browser at ${browserPath}`);
-    const cp = childProcess.spawn(browserPath, args, {});
-    resolve(new Browser({browser, cp, port, verbose}));
-  } else {
-    reject(new Error(`Unsupported browser: ${browser}`));
-  }
-});
+    const port = options.port || 9222;
+    const userDataDir = options.userDataDir;
+    const verbose = options.verbose;
+    if (browser === 'chrome') {
+      const browserPath = chromePath();
+      const args = [
+        `--remote-debugging-port=${port}`,
+        `--user-data-dir=${userDataDir}`
+      ];
+      if (verbose) console.log(`Starting browser at ${browserPath}`);
+      const cp = childProcess.spawn(browserPath, args, {});
+      resolve(new Browser({browser, cp, port, verbose}));
+    } else {
+      reject(new Error(`Unsupported browser: ${browser}`));
+    }
+  });
 }
 
 class Browser {
@@ -50,23 +50,23 @@ class Browser {
   connecting (url) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-      if (this.verbose) console.log('Connecting to browser via CDP');
-      CDP({port: this.port}, (client) => {
-        Promise.all([
-        client.Page.enable()
-      ]).then((result) => {
-        resolve(new Window({client}));
-    }).catch((err) => {
-        console.error(`ERROR: ${err.message}`);
-      client.close();
-      reject(err);
+        if (this.verbose) console.log('Connecting to browser via CDP');
+        CDP({port: this.port}, (client) => {
+          Promise.all([
+            client.Page.enable()
+          ]).then((result) => {
+            resolve(new Window({client}));
+          }).catch((err) => {
+            console.error(`ERROR: ${err.message}`);
+            client.close();
+            reject(err);
+          });
+        }).on('error', (err) => {
+          console.error('Cannot connect to remote endpoint:', err);
+          reject(err);
+        });
+      }, 1000); // Note: waiting for browser to start, eventually retry with shorter interval to avoid the long initial wait if not necessary
     });
-    }).on('error', (err) => {
-        console.error('Cannot connect to remote endpoint:', err);
-      reject(err);
-    });
-    }, 1000); // Note: waiting for browser to start, eventually retry with shorter interval to avoid the long initial wait if not necessary
-  });
   }
 }
 
@@ -104,27 +104,27 @@ class Window {
   evaluate (expression) {
     return new Promise((resolve, reject) => {
       this.client.Runtime.evaluate({expression}, (err, result) => {
-      if (err) {
-        console.error(err);
-        reject(err);
-      } else {
-        // console.log('Runtime.evaluate', expression, result);
-        switch (result.result.type) {
-    case 'object':
-      switch (result.result.subtype) {
-        case 'null':
-          resolve(null);
-          break;
-        default:
-          resolve(result.result); // Note: we cannot access the object more directly than this
-      }
-      break;
-    default:
-      resolve(result.result.value);
-    }
-  }
-  });
-  });
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          // console.log('Runtime.evaluate', expression, result);
+          switch (result.result.type) {
+            case 'object':
+              switch (result.result.subtype) {
+                case 'null':
+                  resolve(null);
+                  break;
+                default:
+                  resolve(result.result); // Note: we cannot access the object more directly than this
+              }
+              break;
+            default:
+              resolve(result.result.value);
+          }
+        }
+      });
+    });
   }
 
   htmlOf (selector) {
@@ -155,18 +155,18 @@ class Window {
   waitForElement (selector) {
     return new Promise((resolve, reject) => {
       const poll = () => {
-      this.evaluate(`document.querySelector("${selector}")`).then((element) => {
-      if (element) {
-        resolve(element);
-      } else {
-        setTimeout(poll, 100);
-  }
-  }).catch((err) => {
-      reject(err);
-  });
-  };
-    poll();
-  });
+        this.evaluate(`document.querySelector("${selector}")`).then((element) => {
+          if (element) {
+            resolve(element);
+          } else {
+            setTimeout(poll, 100);
+          }
+        }).catch((err) => {
+          reject(err);
+        });
+      };
+      poll();
+    });
   }
 }
 
