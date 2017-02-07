@@ -5,7 +5,7 @@ const CDP = require('chrome-remote-interface');
 function chromePath () {
   switch (process.platform) {
     case 'darwin':
-      return 'google chrome';
+      return '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
     case 'win32':
       return 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'; // Note: eventually improve this strategy to locate chrome.
     default:
