@@ -141,13 +141,20 @@ class Window {
   }
 
   type (text, selector) {
+    // Note: see https://github.com/vitalyq/react-trigger-change
     return this.evaluate(`
       (() => {
         const el = document.querySelector("${selector}");
-        const evt = document.createEvent('CustomEvent');
-        evt.initEvent('input', true, true);
+        const descriptor = Object.getOwnPropertyDescriptor(el, 'value');
+        const focusEvent = document.createEvent('UIEvents');
+        focusEvent.initEvent('focus', false, false);
+        el.dispatchEvent(focusEvent);
+        delete el.value;
         el.value = "${text}";
-        el.dispatchEvent(evt);
+        const inputEvent = document.createEvent('HTMLEvents');
+        inputEvent.initEvent('input', true, false);
+        el.dispatchEvent(inputEvent);
+        Object.defineProperty(el, 'value', descriptor);
       })()
     `);
   }
