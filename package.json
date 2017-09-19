@@ -1,6 +1,6 @@
 {
   "name": "websteps",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": " End-to-end web testing on top of Chrome Debugging Protocol",
   "main": "index.js",
   "repository": {
@@ -23,15 +23,15 @@
   },
   "homepage": "https://github.com/larsthorup/node-websteps#readme",
   "dependencies": {
-    "chrome-remote-interface": "^0.17.1"
+    "chrome-remote-interface": "^0.24.5"
   },
   "files": [
     "index.js"
   ],
   "devDependencies": {
-    "chai": "^3.5.0",
+    "chai": "^4.1.2",
     "co": "^4.6.0",
-    "mocha": "^3.2.0"
+    "mocha": "^3.5.3"
   },
   "scripts": {
     "test": "mocha"

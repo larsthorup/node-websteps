@@ -159,14 +159,22 @@ class Window {
     `);
   }
 
-  waitForElement (selector) {
+  waitForElement (selector, options) {
+    options = options || {};
+    let timeout = options.timeout || 5000;
+    const pollTime = 100;
     return new Promise((resolve, reject) => {
       const poll = () => {
         this.evaluate(`document.querySelector("${selector}")`).then((element) => {
           if (element) {
             resolve(element);
           } else {
-            setTimeout(poll, 100);
+            timeout -= pollTime;
+            if (timeout <= 0) {
+              reject(new Error(`Failing to find "${selector}"`));
+            } else {
+              setTimeout(poll, pollTime);
+            }
           }
         }).catch((err) => {
           reject(err);
