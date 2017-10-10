@@ -23,7 +23,8 @@ function launching (options = {}) {
       const browserPath = chromePath();
       const args = [
         `--remote-debugging-port=${port}`,
-        `--user-data-dir=${userDataDir}`
+        `--user-data-dir=${userDataDir}`,
+        '-no-default-browser-check'
       ];
       if (verbose) console.log(`Starting browser at ${browserPath}`);
       const cp = childProcess.spawn(browserPath, args, {});
