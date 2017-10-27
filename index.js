@@ -21,11 +21,11 @@ function launching (options = {}) {
     const verbose = options.verbose;
     if (browser === 'chrome') {
       const browserPath = chromePath();
-      const args = [
+      const args = (options.args || []).concat([
         `--remote-debugging-port=${port}`,
         `--user-data-dir=${userDataDir}`,
         '-no-first-run'
-      ];
+      ]);
       if (verbose) console.log(`Starting browser at ${browserPath}`);
       const cp = childProcess.spawn(browserPath, args, {});
       resolve(new Browser({browser, cp, port, verbose}));
