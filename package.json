@@ -1,6 +1,6 @@
 {
   "name": "websteps",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": " End-to-end web testing on top of Chrome Debugging Protocol",
   "main": "index.js",
   "repository": {
