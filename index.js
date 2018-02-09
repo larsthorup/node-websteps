@@ -45,7 +45,16 @@ class Browser {
 
   close () {
     if (this.verbose) console.log(`Closing ${this.browser}`);
-    this.cp.kill();
+    if (process.platform === 'win32') {
+      // Note: Inspired by https://github.com/GoogleChrome/puppeteer/commit/ac109dba6ddaa62a32fe920e864238d41bf22251#diff-cd756d74c4f724a8d0ebe5f47fff175aR107
+      try {
+        childProcess.execSync(`taskkill /pid ${this.cp.pid} /T /F`);
+      } catch (err) {
+        console.log(`Ignoring: ${err.message}`);
+      }
+    } else {
+      this.cp.kill();
+    }
   }
 
   connecting (url) {
@@ -134,6 +143,7 @@ class Window {
 
   navigating (url) {
     // console.log('CDP navigate', url)
+    this.client.Page.navigate({url}); // Note: workaround for https://github.com/cyrus-and/chrome-remote-interface/issues/324
     return this.client.Page.navigate({url});
   }
 
