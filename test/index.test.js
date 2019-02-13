@@ -1,7 +1,6 @@
 const path = require('path');
 
 require('chai').should();
-const co = require('co'); // Note: poor mans async/await
 
 const websteps = require('..');
 
@@ -10,27 +9,25 @@ describe('websteps', function () {
 
   this.timeout(55000); // Note: end-to-end tests are slow...
 
-  before(function () {
-    return co(function * () {
-      browser = yield websteps.launching({
-        browser: 'chrome',
-        port: 9444,
-        userDataDir: path.join(__dirname, '../.tmp/userData'),
-        verbose: false
-      });
-      window = yield browser.connecting();
+  before(async function () {
+    browser = await websteps.launching({
+      browser: 'chrome',
+      port: 9444,
+      userDataDir: path.join(__dirname, '../.tmp/userData'),
+      verbose: false
     });
+    window = await browser.connecting();
   });
 
-  it('should search on github.com', function () {
-    return co(function * () {
-      yield window.navigating('https://github.com/search');
-      yield window.waitForElement("input[name='q']");
-      yield window.type('websteps', "input[name='q']");
-      yield window.click("button[type='submit']");
-      yield window.waitForElement("ul.repo-list");
-      (yield window.textOf("ul.repo-list")).should.contain('larsthorup');
-    });
+  it('should search on github.com', async function () {
+    await window.navigating('https://github.com/search');
+    await window.waitForElement("input[name='q']");
+    await window.reload();
+    await window.waitForElement("input[name='q']");
+    await window.type('websteps', "input[name='q']");
+    await window.click("button[type='submit']");
+    await window.waitForElement("ul.repo-list");
+    (await window.textOf("ul.repo-list")).should.contain('larsthorup');
   });
 
   after(function () {
