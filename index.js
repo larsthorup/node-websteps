@@ -147,6 +147,10 @@ class Window {
     return this.client.Page.navigate({url});
   }
 
+  reload () {
+    return this.client.Page.reload();
+  }
+
   textOf (selector) {
     return this.evaluate(`document.querySelector("${selector}").textContent`);
   }
