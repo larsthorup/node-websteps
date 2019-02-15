@@ -1,4 +1,5 @@
 const childProcess = require('child_process');
+const fs = require('fs');
 
 const CDP = require('chrome-remote-interface');
 
@@ -7,7 +8,13 @@ function chromePath () {
     case 'darwin':
       return '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
     case 'win32':
-      return 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'; // Note: eventually improve this strategy to locate chrome.
+      const localPath = `${process.env.LOCALAPPDATA}\\Google\\Chrome\\Application\\chrome.exe`;
+      if (fs.existsSync(localPath)) {
+        console.log({localPath})
+        return localPath;
+      }
+      const globalPath = 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe';
+      return globalPath;
     default:
       return 'google-chrome';
   }
