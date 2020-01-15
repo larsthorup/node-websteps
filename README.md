@@ -1,4 +1,10 @@
 # node-websteps
+
+[![npm version](https://badge.fury.io/js/websteps.svg)](https://www.npmjs.com/package/websteps)
+[![Dependency Status](https://david-dm.org/larsthorup/node-websteps.png)](https://david-dm.org/larsthorup/node-websteps#info=dependencies)
+[![devDependency Status](https://david-dm.org/larsthorup/node-websteps/dev-status.png)](https://david-dm.org/larsthorup/node-websteps#info=devDependencies)
+
+
 End-to-end web testing on top of Chrome Debugging Protocol
 
 Pure JavaScript except for Chrome itself. No Java-based Selenium or platform-specific binary chromedriver required.
