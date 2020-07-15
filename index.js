@@ -35,7 +35,7 @@ function launching (options = {}) {
         '-no-first-run'
       ]);
       if (verbose) console.log(`Starting browser at ${browserPath}`);
-      const cp = childProcess.spawn(browserPath, args, {});
+      const cp = childProcess.spawn(browserPath, args, {stdio: 'inherit'});
       if (verbose) console.log(cp);
       resolve(new Browser({browser, cp, port, verbose}));
     } else {
