@@ -31,7 +31,9 @@ function launching (options = {}) {
       const args = (options.args || []).concat([
         `--remote-debugging-port=${port}`,
         `--user-data-dir=${userDataDir}`,
-        '--no-first-run'
+        '--no-first-run',
+        '--headless',
+        '--disable-gpu'
       ].concat(verbose ? [`--enable-logging=stdout`] : []));
       if (verbose) console.log(`Starting browser at ${browserPath}`);
       const cp = childProcess.spawn(browserPath, args, {stdio: 'inherit'});
