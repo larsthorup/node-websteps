@@ -13,7 +13,8 @@ function chromePath () {
         console.log({localPath})
         return localPath;
       }
-      const globalPath = 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe';
+      // Note: https://bugs.chromium.org/p/chromium/issues/detail?id=380177
+      const globalPath = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
       return globalPath;
     default:
       return 'google-chrome';
@@ -33,7 +34,8 @@ function launching (options = {}) {
         `--user-data-dir=${userDataDir}`,
         '--no-first-run',
         '--headless',
-        '--disable-gpu'
+        '--disable-gpu',
+        'about:blank' // Note: ensure a tab is opened as an "inspectable target"
       ].concat(verbose ? [`--enable-logging=stdout`] : []));
       if (verbose) console.log(`Starting browser at ${browserPath}`);
       const cp = childProcess.spawn(browserPath, args, {stdio: 'inherit'});
