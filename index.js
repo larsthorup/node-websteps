@@ -33,9 +33,9 @@ function launching (options = {}) {
         `--remote-debugging-port=${port}`,
         `--user-data-dir=${userDataDir}`,
         '--no-first-run',
-        '--headless',
-        '--disable-gpu',
-        'about:blank' // Note: ensure a tab is opened as an "inspectable target"
+        '--headless=new',
+        '--disable-gpu'
+        // 'about:blank' // Note: ensure a tab is opened as an "inspectable target"
       ].concat(verbose ? [`--enable-logging=stdout`] : []));
       if (verbose) console.log(`Starting browser at ${browserPath}`);
       const cp = childProcess.spawn(browserPath, args, {stdio: 'inherit'});
